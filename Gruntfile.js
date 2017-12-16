@@ -42,6 +42,16 @@ module.exports = function(grunt) {
     },
 
     cssmin: {
+      options: {
+        mergeIntoShorthands: false,
+        roundingPrecision: -1
+      },
+      target: {
+        files: {
+          //maybe this?
+          'public/dist/output.css': ['public/style.css']
+        }
+      }
     },
 
     watch: {
@@ -66,9 +76,19 @@ module.exports = function(grunt) {
       }
     },
 
-    //put an env
+    env: {
+      dev: {
+        NODE_ENV: 'development',
+      },
+    },
 
-    //put a gitpush
+    gitpush: {
+      your_target: {
+        options: {
+          remote: 'live'
+        }
+      }
+    }
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -79,6 +99,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-env');
+  grunt.loadNpmTasks('grunt-git');
 
   //load env and gitpush
   
@@ -100,6 +122,7 @@ module.exports = function(grunt) {
   grunt.registerTask('upload', function(n) {
     if (grunt.option('prod')) {
       // add your production server task here
+      grunt.task.run(['env', 'git']);
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
@@ -108,8 +131,7 @@ module.exports = function(grunt) {
   // grunt.registerTask('deploy', [
   //   // add your deploy tasks here
   // ]);
-  grunt.registerTask('deploy', [ 'build'
-  ]);
+  grunt.registerTask('deploy', [ 'build', 'upload' ]);
 
 
 };

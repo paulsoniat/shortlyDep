@@ -117,21 +117,34 @@ module.exports = function(grunt) {
     'mochaTest'
   ]);
 
+  grunt.registerTask('prodServer', [
+    'shell'
+  ]);
+
   grunt.registerTask('build', ['eslint', 'mochaTest', 'uglify', 'concat' ]);
 
   grunt.registerTask('upload', function(n) {
     if (grunt.option('prod')) {
       // add your production server task here
-      grunt.task.run(['env', 'git']);
+      grunt.task.run(['prodServer']);
     } else {
       grunt.task.run([ 'server-dev' ]);
+    }
+  });
+
+  grunt.registerTask('deploy', function(n) {
+    if (grunt.option('prod')) {
+      // add your production server task here
+      grunt.task.run(['gitpush']);
+    } else {
+      grunt.task.run([ 'env', 'server-dev' ]);
     }
   });
 
   // grunt.registerTask('deploy', [
   //   // add your deploy tasks here
   // ]);
-  grunt.registerTask('deploy', [ 'build', 'upload' ]);
+  
 
 
 };

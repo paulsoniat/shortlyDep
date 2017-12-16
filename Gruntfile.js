@@ -141,10 +141,4 @@ module.exports = function(grunt) {
     }
   });
 
-  // grunt.registerTask('deploy', [
-  //   // add your deploy tasks here
-  // ]);
-  
-
-
 };

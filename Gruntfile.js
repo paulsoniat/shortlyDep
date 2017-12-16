@@ -11,7 +11,7 @@ module.exports = function(grunt) {
         dest: 'public/dist/build.js'
       }
     },
-
+    //make clean here?
     mochaTest: {
       test: {
         options: {
@@ -28,11 +28,11 @@ module.exports = function(grunt) {
     },
 
     uglify: {
-      // myTarget: {
-      //   files: {
-      //     'dest/output.min.js': ['src/input1.js', 'src/input2.js']
-      //   }
-      // }
+      my_target: {
+        files: {
+          'public/dist/output.min.js': ['public/dist/built.js']
+        }
+      }
     },
 
     eslint: {

@@ -65,6 +65,10 @@ module.exports = function(grunt) {
       prodServer: {
       }
     },
+
+    //put an env
+
+    //put a gitpush
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -75,6 +79,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
+
+  //load env and gitpush
   
 
   grunt.registerTask('server-dev', function (target) {

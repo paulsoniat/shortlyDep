@@ -6,7 +6,7 @@
     });
   </script>
 
-  <% if (env.NODE_ENV !== 'development') { %>
+  <% if (process.env.NODE_ENV !== 'development') { %>
     <script src='/dist/output.min.js'></script>
     <% } else {%>
       <script src='/client/app.js'></script>

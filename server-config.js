@@ -15,7 +15,7 @@ app.use(partials());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
-app.use(cookieParser('shhhh, very secret'));
+app.use(cookieParser('shhhh, secret'));
 app.use(session({
   secret: 'shhh, it\'s a secret',
   resave: false,

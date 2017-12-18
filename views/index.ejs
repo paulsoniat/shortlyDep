@@ -5,10 +5,9 @@
       new Shortly();
     });
   </script>
-
-  <% if (process.env.NODE_ENV !== 'development') { %>
+  <% if (process.env.NODE_STATE !== 'development') {%>
     <script src='/dist/output.min.js'></script>
-    <% } else {%>
+    <%} else {%> -->
       <script src='/client/app.js'></script>
       <script src='/client/link.js'></script>
       <script src='/client/links.js'></script>

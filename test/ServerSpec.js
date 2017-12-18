@@ -50,6 +50,7 @@ describe('', function() {
           .expect(200)
           .expect(function(res) {
             expect(res.body.url).to.equal('http://www.roflzoo.com/');
+            console.log(res.body, 'this is res!@$!$!$');
             expect(res.body.code).to.be.ok;
           })
           .end(done);

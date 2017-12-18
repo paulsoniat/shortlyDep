@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - "7"
+dist: trusty # testingggg
+sudo: false  # no need for virtualization.
+services:
+  - mongo
+before_script:
+  - "npm install"
+script:
+  - npm test
+notifications:
+  webhooks: https://greenlight.operationspark.org/api/v2/webhooks/travisci
+

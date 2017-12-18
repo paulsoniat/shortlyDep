@@ -1,21 +1,22 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
       options: {
-        separator: ';'
+        separator: ';',
       },
       dist: {
-        src: ['public/client/**/*.js'],
-        dest: 'public/dist/build.js'
-      }
+        src: ['public/lib/*.js', 'public/*.js'],
+        dest: 'public/dist/build.js',
+      },
     },
-    //make clean here?
+
     mochaTest: {
       test: {
         options: {
-          reporter: 'spec'
+          reporter: 'nyan',
+          timeout: 8000,
         },
         src: ['test/**/*.js']
       }
@@ -28,28 +29,26 @@ module.exports = function(grunt) {
     },
 
     uglify: {
-      my_Target: {
+      options: {
+        mangle: false
+      },
+      myTarget: {
         files: {
-          'public/dist/output.min.js': ['public/dist/built.js']
+          'public/dist/output.min.js': ['public/dist/build.js']
         }
       }
     },
 
     eslint: {
       target: [
-        'public/client/**/*.js'
+        'public/client/*.js', 'lib/*.js', 'app/**/*.js', 'server-config.js'
       ]
     },
 
     cssmin: {
-      options: {
-        mergeIntoShorthands: false,
-        roundingPrecision: -1
-      },
       target: {
         files: {
-          //maybe this?
-          'public/dist/output.css': ['public/style.css']
+          'public/dist/output.min.css': ['public/style.css']
         }
       }
     },
@@ -61,6 +60,7 @@ module.exports = function(grunt) {
           'public/lib/**/*.js',
         ],
         tasks: [
+          'env:prod',
           'concat',
           'uglify'
         ]
@@ -73,22 +73,18 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
+        command: 'git push live master'
       }
     },
 
     env: {
       dev: {
-        NODE_ENV: 'development',
+        NODE_STATE: 'development'
       },
-    },
-
-    gitpush: {
-      your_target: {
-        options: {
-          remote: 'live'
-        }
+      prod: {
+        NODE_STATE: 'production'
       }
-    }
+    },
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -100,13 +96,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-env');
-  grunt.loadNpmTasks('grunt-git');
+  // grunt.loadNpmTasks('grunt-contrib-clean');
 
-  //load env and gitpush
-  
 
   grunt.registerTask('server-dev', function (target) {
-    grunt.task.run([ 'nodemon', 'watch' ]);
+    grunt.task.run(['env:dev', 'nodemon', 'watch']);
   });
 
   ////////////////////////////////////////////////////
@@ -117,28 +111,24 @@ module.exports = function(grunt) {
     'mochaTest'
   ]);
 
-  grunt.registerTask('prodServer', [
-    'shell'
+  grunt.registerTask('build', ['test', 'eslint', 'concat', 'uglify', 'cssmin'
   ]);
 
-  grunt.registerTask('build', ['eslint', 'mochaTest', 'uglify', 'concat' ]);
-
-  grunt.registerTask('upload', function(n) {
+  grunt.registerTask('upload', function (n) {
     if (grunt.option('prod')) {
-      // add your production server task here
-      grunt.task.run(['prodServer']);
+      grunt.task.run(['env:prod', 'build']);
     } else {
-      grunt.task.run([ 'server-dev' ]);
+      grunt.task.run(['server-dev']);
     }
   });
 
-  grunt.registerTask('deploy', function(n) {
+  grunt.registerTask('deploy', (n) => {
     if (grunt.option('prod')) {
-      // add your production server task here
-      grunt.task.run(['gitpush']);
+      grunt.task.run(['env:prod', 'build']);
     } else {
-      grunt.task.run([ 'env', 'server-dev' ]);
+      grunt.task.run(['server-dev']);
     }
   });
+
 
 };

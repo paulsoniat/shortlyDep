@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8" />
   <title>Shortly</title>
-  <% if (process.env.NODE_ENV !== 'development') { %>
-    <link rel="stylesheet" type="text/css" href="/dist/output.css">
-    <% } else { %>
+  <% if (process.env.NODE_STATE !== 'development') {%>
+    <link rel="stylesheet" type="text/css" href="dist/output.min.css">
+    <%} else {%>
       <link rel="stylesheet" type="text/css" href="style.css">
       <% } %>
         <script src="/lib/jquery.js"></script>
@@ -17,7 +17,7 @@
 </head>
 
 <body>
-  <h1>Shortly -1-1-! by Paul and Erik </h1>
+  <h1>Shortly</h1>
   <%- body %>
 </body>
 

@@ -11,11 +11,11 @@
 
 ////THIS IS OUR CONNECTION TO THE MONGO DATABASE!_@!$*!$@_$
 
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 mongoose.connect('mongodb://paulanderik:paulanderik@ds151702.mlab.com:51702/paulanderic123', {useMongoClient: true});
 
-var db = mongoose.connection;
+const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error'));
 
@@ -23,37 +23,56 @@ db.once('open', function() {
   console.log('connected');
 });
 
+let linkSchema = mongoose.Schema({
+  url: String,
+  title: String,
+  baseUrl: String,
+  visits: { type: Number, default: 0 },
+  code: String
+});
+
+let userSchema = mongoose.Schema({
+  username: { type: String, unique: true },
+  password: String,
+});
+
+
+
+module.exports.linkSchema = linkSchema;
+
+module.exports.userSchema = userSchema;
+
 //create a save user and save url function
 
-module.exports.saveUser = (userObj) => {
-  var user = new User(userObj);
-  // console.log(user);
-  return new Promise((reject, resolve) => {
-    db.user.save((err, res) => {
-      if (err) {
-        console.log(err, null);
-      }
-      if (res) {
-        console.log(null, 'resolved');
-      }
-    });
-  });
-};
+// module.exports.saveUser = (userObj) => {
+//   var user = new User(userObj);
+//   // console.log(user);
+//   return new Promise((reject, resolve) => {
+//     db.user.save((err, res) => {
+//       if (err) {
+//         console.log(err, null);
+//       }
+//       if (res) {
+//         console.log(null, 'resolved');
+//       }
+//     });
+//   });
+// };
 
-module.exports.saveUrl = (urlObj) => {
-  var link = new Link(urlObj);
-  // console.log(link);
-  return new Promise((reject, resolve) => {
-    db.link.save((err, res) => {
-      if (err) {
-        console.log(err, null);
-      }
-      if (res) {
-        console.log(null, 'resolved');
-      }
-    });
-  });
-};
+// module.exports.saveUrl = (urlObj) => {
+//   var link = new Link(urlObj);
+//   // console.log(link);
+//   return new Promise((reject, resolve) => {
+//     db.link.save((err, res) => {
+//       if (err) {
+//         console.log(err, null);
+//       }
+//       if (res) {
+//         console.log(null, 'resolved');
+//       }
+//     });
+//   });
+// };
 
 
 // db.knex.schema.hasTable('urls').then(function(exists) {
@@ -85,6 +104,3 @@ module.exports.saveUrl = (urlObj) => {
 //     });
 //   }
 // });
-
-
-module.exports = db;
